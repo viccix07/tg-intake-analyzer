@@ -1,3 +1,4 @@
+console.log("Server file starting...1");
 const express = require('express');
 const cfg = require('./config');
 const state = require('./state');
@@ -28,6 +29,8 @@ function isDuplicate(id) {
 
 app.get('/health', (_req, res) => res.json({ ok: true }));
 
+console.log("Server file starting...2");
+
 app.post('/webhook', (req, res) => {
   if (cfg.webhookSecret && req.get('X-Telegram-Bot-Api-Secret-Token') !== cfg.webhookSecret) {
     return res.sendStatus(403);
@@ -44,6 +47,8 @@ app.post('/webhook', (req, res) => {
     console.error(`[chat ${chatId}] unhandled error:`, e)
   );
 });
+
+console.log("Server file starting...3");
 
 async function handleMessage(chatId, m) {
   // Shared contact button -> treat as phone number text
@@ -77,6 +82,8 @@ async function handleMessage(chatId, m) {
     return tg.sendMessage(chatId, reply);
   }
 
+console.log("Server file starting...4");
+
   // Case B: lead qualified
   lead.language = msg.normalizeLang(lead.language);
   lead.timestamp = new Date().toISOString(); // never trust the LLM's clock
@@ -105,6 +112,8 @@ async function handleMessage(chatId, m) {
 
   state.reset(chatId); // fresh conversation for any next inquiry
 }
+
+console.log("Server file starting...5");
 
 async function retry(fn, attempts = 3) {
   let lastErr;
