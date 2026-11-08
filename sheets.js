@@ -4,27 +4,13 @@ const cfg = require('./config');
 
 const HEADERS = ['Timestamp', 'Name', 'Phone', 'Language', 'Service', 'Preferred Time', 'Status'];
 
-const { google } = require('googleapis');
-const config = require('./config');
-
-const auth = new google.auth.GoogleAuth({
-  credentials: {
-    client_email: config.googleClientEmail,
-    private_key: config.googlePrivateKey ? config.googlePrivateKey.replace(/\\n/g, '\n') : undefined,
-    project_id: config.googleProjectId,
-  },
-  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-});
-
-const sheets = google.sheets({ version: 'v4', auth });
-
-module.exports = sheets;
-
+// Authenticate using the split Google credentials
 const auth = new JWT({
-  email: creds.client_email,
-  key: String(creds.private_key).replace(/\\n/g, '\n'),
+  email: cfg.googleClientEmail,
+  key: cfg.googlePrivateKey ? cfg.googlePrivateKey.replace(/\\n/g, '\n') : '',
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
+
 const doc = new GoogleSpreadsheet(cfg.sheetsId, auth);
 
 let sheetPromise = null;
@@ -37,11 +23,11 @@ function getSheet() {
       try {
         await sheet.loadHeaderRow();
       } catch {
-        await sheet.setHeaderRow(HEADERS); // empty sheet -> create header row
+        await sheet.setHeaderRow(HEADERS);
       }
       return sheet;
     })().catch((e) => {
-      sheetPromise = null; // retry on next call
+      sheetPromise = null;
       throw e;
     });
   }
