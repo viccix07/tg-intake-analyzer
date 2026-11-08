@@ -23,7 +23,7 @@ Create an OpenAI key and put it in `LLM_API_KEY` (default model `gpt-4o-mini`).
 3. **IAM & Admin -> Service Accounts -> Create** (no roles needed) -> open it -> **Keys -> Add key -> JSON**. A file downloads.
 4. Create a Google Sheet. Copy the ID from the URL: `docs.google.com/spreadsheets/d/<THIS_PART>/edit` -> `GOOGLE_SHEETS_ID`.
 5. Click **Share** on the sheet and add the service account's `client_email` as **Editor**. (Skipping this is the #1 reason it fails.)
-6. Paste the whole JSON file as ONE line into `GOOGLE_SERVICE_ACCOUNT_CREDENTIALS`:
+6. Paste the whole JSON file as ONE line into `GOOGLE_SERVICE_ACCOUNT_CREDENTIALS` now they are split to 3 different categories (PI, PK, CE):
    ```bash
    node -e "console.log(JSON.stringify(require('./your-key.json')))"
    ```
@@ -37,7 +37,7 @@ ngrok http 3000           # terminal 2
 Put the ngrok `https://...` URL in `PUBLIC_URL` and restart. The app calls `setWebhook` automatically
 (with `WEBHOOK_SECRET` as `secret_token`). Verify:
 ```bash
-curl "https://api.telegram.org/bot<TOKEN>/getWebhookInfo"
+curl "https://api.telegram.org/bhot<TOKEN>/getWebhookInfo"
 ```
 Message your bot and test in Uzbek, Russian and English.
 

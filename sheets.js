@@ -4,7 +4,22 @@ const cfg = require('./config');
 
 const HEADERS = ['Timestamp', 'Name', 'Phone', 'Language', 'Service', 'Preferred Time', 'Status'];
 
-const creds = JSON.parse(cfg.googleCreds);
+const { google } = require('googleapis');
+const config = require('./config');
+
+const auth = new google.auth.GoogleAuth({
+  credentials: {
+    client_email: config.googleClientEmail,
+    private_key: config.googlePrivateKey ? config.googlePrivateKey.replace(/\\n/g, '\n') : undefined,
+    project_id: config.googleProjectId,
+  },
+  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+});
+
+const sheets = google.sheets({ version: 'v4', auth });
+
+module.exports = sheets;
+
 const auth = new JWT({
   email: creds.client_email,
   key: String(creds.private_key).replace(/\\n/g, '\n'),
