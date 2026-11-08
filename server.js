@@ -13,9 +13,9 @@ app.use(express.json({ limit: '1mb' }));
 const seenUpdates = new Set();
 const auth = new google.auth.GoogleAuth({
   credentials: {
-    client_email: process.env.GOOGLE_CLIENT_EMAIL,
-    private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-    project_id: process.env.GOOGLE_PROJECT_ID,
+    client_email: config.googleClientEmail,
+    private_key: config.googlePrivateKey.replace(/\\n/g, '\n'),
+    project_id: config.googleProjectId,
   },
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
