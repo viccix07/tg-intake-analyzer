@@ -12,14 +12,6 @@ app.use(express.json({ limit: '1mb' }));
 
 // Telegram retries on non-200s; remember recent update_ids to avoid double-processing.
 const seenUpdates = new Set();
-const auth = new google.auth.GoogleAuth({
-  credentials: {
-    client_email: config.googleClientEmail,
-    private_key: config.googlePrivateKey.replace(/\\n/g, '\n'),
-    project_id: config.googleProjectId,
-  },
-  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-});
 function isDuplicate(id) {
   if (seenUpdates.has(id)) return true;
   seenUpdates.add(id);
